@@ -21,6 +21,43 @@ class StudentController extends Controller
     {
         if($request->isMethod('POST')){
 
+            // 1.控制器验证
+            /*
+            $this->validate($request,[
+                'Student.name'=>'required|min:2|max:20',
+                'Student.age' => 'required|integer',
+                'Student.sex' => 'required|integer'
+            ],[
+                'required' => ':attribute 为必填项',
+                'min' => ':attribute  长度不符合要求',
+                'integer' => ':attribute 必须为整数'
+            ],[
+                'Student.name'=> '姓名',
+                'Student.age' => '年龄',
+                'Student.sex' => '性别'
+            ]);
+            */
+
+            //2.Validate类验证
+            $validator = \Validator::make($request->input(),[
+                'Student.name'=>'required|min:2|max:20',
+                'Student.age' => 'required|integer',
+                'Student.sex' => 'required|integer'
+            ],[
+                'required' => ':attribute 为必填项',
+                'min' => ':attribute  长度不符合要求',
+                'integer' => ':attribute 必须为整数'
+            ],[
+                'Student.name'=> '姓名',
+                'Student.age' => '年龄',
+                'Student.sex' => '性别'
+            ]);
+
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+
             $data = $request->input('Student');
 
             if(Student::create($data)){
