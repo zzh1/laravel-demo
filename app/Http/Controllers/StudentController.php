@@ -9,7 +9,7 @@ class StudentController extends Controller
 
     public function index()
     {
-        $students = Student::paginate(20);
+        $students = Student::paginate(5);
 
         return view('student.index',[
             'students'=>$students,
@@ -132,6 +132,18 @@ class StudentController extends Controller
         return view('student.detail',[
             'student' => $student
         ]);
+    }
+
+    public function delete($id)
+    {
+        $student = Student::find($id);
+
+        if($student->delete()){
+            return redirect('student/index')->with('success','删除成功- '.$id);
+        }else{
+            return redirect('student/index')->with('error','删除失败-'.$id);
+        }
+
     }
 
 }
