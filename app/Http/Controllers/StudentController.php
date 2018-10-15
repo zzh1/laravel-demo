@@ -19,6 +19,8 @@ class StudentController extends Controller
     //添加页面
     public function create(Request $request)
     {
+        $student = new Student();
+
         if($request->isMethod('POST')){
 
             // 1.控制器验证
@@ -66,7 +68,9 @@ class StudentController extends Controller
                 return redirect()->back();
             }
         }
-        return view('student.create');
+        return view('student.create',[
+            'student' => $student
+        ]);
     }
 
     //保存添加
